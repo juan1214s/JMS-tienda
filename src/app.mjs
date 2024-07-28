@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import imagesRoutes from "./routes/images.routes.mjs";
+import imagesRoutes from "./routes/product.routes.mjs";
+import brandsRoutes from "./routes/brands.mjs"
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Ruta de las imágenes
 app.use('/JMS/product', imagesRoutes);
+app.use('/JMS/brands', brandsRoutes);
 
 export default app;
