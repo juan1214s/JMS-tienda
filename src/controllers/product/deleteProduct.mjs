@@ -2,11 +2,11 @@ import { connectToDatabase } from '../../DB/db.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { deleteProductQuery, deleImagesQuery, getsAssociatedImagesQuery } from "../../DB/queries.mjs"
+import { deleteProductQuery, deleImagesQuery, getsAssociatedImagesQuery, validateProductExistsQuery } from "../../DB/queries.mjs";
 
-//  Convierte la URL del módulo en una ruta de archivo.
+// Convierte la URL del módulo en una ruta de archivo.
 const __filename = fileURLToPath(import.meta.url);
-//Obtiene el directorio que contiene el archivo actual.
+// Obtiene el directorio que contiene el archivo actual.
 const __dirname = path.dirname(__filename);
 
 export const deleteProduct = async (req, res) => {
@@ -24,17 +24,21 @@ export const deleteProduct = async (req, res) => {
     // Iniciar transacción
     await connection.beginTransaction();
 
+    // Usa una consulta con parámetros para evitar inyecciones SQL
+    const [productExists] = await connection.execute( validateProductExistsQuery, [productId]);
+  
+    if (productExists.length === 0) {
+      return res.status(404).json({ message: "No se encontró el producto" });
+    }
+
     // Obtener las rutas de las imágenes asociadas
-    const [rows] = await connection.execute(
-      getsAssociatedImagesQuery,
-      [productId]
-    );
+    const [rows] = await connection.execute(getsAssociatedImagesQuery, [productId]);
 
     // Eliminar las imágenes del sistema de archivos
     rows.forEach(row => {
-      // Construir la ruta completa del archivo, cada ../ es para retroceder un nivel en las carpetas
+      // Construir la ruta completa del archivo
       const filePath = path.resolve(__dirname, '../../../', row.file_path);
-      console.log(filePath)
+      console.log(filePath);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       } else {
@@ -43,16 +47,10 @@ export const deleteProduct = async (req, res) => {
     });
 
     // Eliminar las imágenes de la base de datos
-    await connection.execute(
-      deleImagesQuery,
-      [productId]
-    );
+    await connection.execute(deleImagesQuery, [productId]);
 
     // Eliminar el producto
-    await connection.execute(
-      deleteProductQuery,
-      [productId]
-    );
+    await connection.execute(deleteProductQuery, [productId]);
 
     // Confirmar transacción
     await connection.commit();

@@ -19,14 +19,16 @@ export const createProducts = async (req, res) => {
     // Iniciar transacción significa q los datos se van a guardar a la vez, todo en una operacion
     await connection.beginTransaction();
 
-    // Insertar producto
+    // Insertar producto y las llaves son porq mysql2 devuelve un array
     const [productResult] = await connection.execute(
       insertProductQuery,
       [name, description, price, model, brand_id]
     );
+
+    //insertId es una propieda de mysql2 q devuelve el id del producto q se inserto
     const productId = productResult.insertId;
 
-    // Insertar imágenes, mapea files para obtener el path osea la ruta donde esta la imagen
+    // Insertar imágenes, mapea files para obtener el path osea la ruta donde esta la imagenes
     const imageInsertPromises = files.map(file =>
       connection.execute(
         insertImageQuery,
