@@ -10,8 +10,7 @@ export const getProducts = async (req, res) => {
 
         // Agrupar los productos por id
         const productsMap = getProducts.reduce((acc, product) => {
-
-            const { id, name, price, description, brand_name, file_path } = product;
+            const { id, name, price, description, model, stock, brand_name, category_name, file_path } = product;
 
             //sino existe el id crea un objeto
             if (!acc[id]) {
@@ -20,7 +19,10 @@ export const getProducts = async (req, res) => {
                     name,
                     price,
                     description,
+                    model, 
+                    stock,
                     brand_name,
+                    category_name,
                     file_paths: []
                 };
             }
@@ -29,6 +31,8 @@ export const getProducts = async (req, res) => {
             acc[id].file_paths.push(file_path);
 
             return acc;
+
+            //indica q en cada iteracion devuelve el objeto
         }, {});
 
         // Convertir el objeto de productos agrupados en un array

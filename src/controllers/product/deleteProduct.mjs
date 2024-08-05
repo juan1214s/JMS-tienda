@@ -38,7 +38,6 @@ export const deleteProduct = async (req, res) => {
     rows.forEach(row => {
       // Construir la ruta completa del archivo
       const filePath = path.resolve(__dirname, '../../../', row.file_path);
-      console.log(filePath);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       } else {

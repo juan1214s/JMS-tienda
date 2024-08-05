@@ -2,18 +2,17 @@ import { connectToDatabase } from '../../DB/db.mjs';
 import { insertImageQuery, insertProductQuery} from "../../DB/queries.mjs"
 
 export const createProducts = async (req, res) => {
-  const { name, description, price, model, brand_id } = req.body;
-  //verifica si esta vacio o contiene un archivo
-  const files = req.files && req.files['images'] ? req.files['images'] : [];
-
-  // Verificar si el precio es válido
-  if (isNaN(price)) {
-    return res.status(400).json({ error: 'Precio inválido' });
-  }
-
   let connection;
-
   try {
+    const { name, description, price, model, stock, brand_id, category_id } = req.body;
+    //verifica si esta vacio o contiene un archivo
+    const files = req.files && req.files['images'] ? req.files['images'] : [];
+  
+    // Verificar si el precio es válido
+    if (isNaN(price)) {
+      return res.status(400).json({ error: 'Precio inválido' });
+    }
+
     connection = await connectToDatabase();
 
     // Iniciar transacción significa q los datos se van a guardar a la vez, todo en una operacion
@@ -22,7 +21,7 @@ export const createProducts = async (req, res) => {
     // Insertar producto y las llaves son porq mysql2 devuelve un array
     const [productResult] = await connection.execute(
       insertProductQuery,
-      [name, description, price, model, brand_id]
+      [name, description, price, model, stock, brand_id, category_id]
     );
 
     //insertId es una propieda de mysql2 q devuelve el id del producto q se inserto

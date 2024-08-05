@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../DB/db.mjs"
-import { validateProductExistsQuery, getProductIdQuery } from "../../DB/queries.mjs"
+import { getProductIdQuery } from "../../DB/queries.mjs"
 
 export const getProductId = async (req, res)=>{
     let connection;
@@ -18,17 +18,44 @@ export const getProductId = async (req, res)=>{
         connection = await connectToDatabase();
 
         //verifica si el id del producto existe en la base de datos
-        const [productExists] = await connection.execute(validateProductExistsQuery, [productId]);
+        const [getProductId] = await connection.execute(getProductIdQuery, [productId]);
 
-        if (productExists.length === 0) {
+        
+        if (getProductId.length === 0) {
             return res.status(404).json({message: "No se encontro el producto."})
         }
 
-        //consulta para obtener un producto mediante el id 
-        const [getProductId] = await connection.execute(getProductIdQuery, [productId])
-        connection.end();
+        // Agrupar los productos por id
+        const productsMap = getProductId.reduce((acc, product) => {
+            const { id, name, price, description, model, stock, brand_name, category_name, file_path } = product;
+
+            if (!acc[id]) {
+                acc[id] = {
+                    id,
+                    name,
+                    price,
+                    description,
+                    model,
+                    stock,
+                    brand_name,
+                    category_name,
+                    file_paths:[]
+                }
+            }
+
+            // Añadir el file_path al array de file_paths
+            acc[id].file_paths.push(file_path);
+
+            return acc;
+
+            //indica q en cada iteracion devuelve el objeto
+        },{}) 
+
+         // Convertir el objeto de productos agrupados en un array
+        const transformedProducts = Object.values(productsMap);
         
-        res.status(200).json(getProductId);
+        // Convertir el objeto de productos agrupados en un array
+        res.status(200).json(transformedProducts);
     } catch (error) {
         console.log(`Error al obtener los productos ${error}`);
         res.status(500).json({message: 'Error interno al obtener los productos'});

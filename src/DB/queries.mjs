@@ -1,9 +1,10 @@
 //productos
-export const insertProductQuery = "INSERT INTO product (name, description, price, model, brand_id) VALUES (?, ?, ?, ?, ?)";
-export const getProductsQuery = " SELECT product.id, product.name, product.price, product.description, brand.name, image.id AS brand_name, image.file_path  FROM product JOIN brand ON product.brand_id = brand.id JOIN image ON product.id = image.product_id ";
+export const insertProductQuery = "INSERT INTO product (name, description, price, model, stock, brand_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+export const getProductsQuery = " SELECT product.id, product.name, product.price, product.description, product.model, product.stock, brand.name AS brand_name, image.id AS image_id, image.file_path, category.name AS category_name FROM  product JOIN brand ON product.brand_id = brand.id JOIN image ON product.id = image.product_id JOIN category ON product.category_id = category.id";
 export const deleteProductQuery = "DELETE FROM product WHERE id = ?";
 export const validateProductExistsQuery = "SELECT * FROM product WHERE id = ?";
-export const getProductIdQuery = "SELECT product.id, product.name, product.price, product.description, brand.name AS brand_name FROM product JOIN brand ON product.brand_id = brand.id WHERE product.id = ?"
+export const getProductIdQuery = "SELECT product.id, product.name, product.price, product.description, product.model, product.stock, brand.name AS brand_name, image.id AS image_id, image.file_path, category.name AS category_name FROM  product JOIN brand ON product.brand_id = brand.id JOIN image ON product.id = image.product_id JOIN category ON product.category_id = category.id WHERE product.id = ?"
+export const updateProductQuery = "UPDATE product SET name = ?, description = ?, price = ?, model = ?, stock = ?, brand_id = ?, category_id = ? WHERE id = ?;"
 
 //imagenes
 export const insertImageQuery = "INSERT INTO image (product_id, file_path) VALUES (?, ?)";
@@ -14,4 +15,6 @@ export const getsAssociatedImagesQuery = "SELECT file_path FROM image WHERE prod
 export const getBrandsQuery = "SELECT * FROM brand";
 
 
+//categorias
+export const getCategoryQuery = "SELECT * FROM category";
 
