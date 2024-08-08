@@ -2,7 +2,7 @@ import { connectToDatabase } from '../../DB/db.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { deleteProductQuery, deleImagesQuery, getsAssociatedImagesQuery, validateProductExistsQuery } from "../../DB/queries.mjs";
+import { deleteProductQuery, getsAssociatedImagesQuery, validateProductExistsQuery, deleImagesQuery } from "../../DB/queries.mjs";
 
 // Convierte la URL del módulo en una ruta de archivo.
 const __filename = fileURLToPath(import.meta.url);
@@ -25,8 +25,8 @@ export const deleteProduct = async (req, res) => {
     await connection.beginTransaction();
 
     // Usa una consulta con parámetros para evitar inyecciones SQL
-    const [productExists] = await connection.execute( validateProductExistsQuery, [productId]);
-  
+    const [productExists] = await connection.execute(validateProductExistsQuery, [productId]);
+
     if (productExists.length === 0) {
       return res.status(404).json({ message: "No se encontró el producto" });
     }
@@ -53,7 +53,6 @@ export const deleteProduct = async (req, res) => {
 
     // Confirmar transacción
     await connection.commit();
-    connection.end();
 
     res.status(200).json({ message: 'Producto eliminado exitosamente' });
   } catch (error) {
@@ -61,9 +60,13 @@ export const deleteProduct = async (req, res) => {
 
     if (connection) {
       await connection.rollback();
-      connection.end();
     }
 
     res.status(500).json({ error: 'Error al eliminar el producto' });
+  } finally {
+    // Cerrar la conexión a la base de datos
+    if (connection) {
+      await connection.end();
+    }
   }
 };

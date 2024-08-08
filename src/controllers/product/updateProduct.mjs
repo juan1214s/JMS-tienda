@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../DB/db.mjs";
-import { getProductIdQuery, updateProductQuery, getsAssociatedImagesQuery, deleImagesQuery, insertImageQuery } from "../../DB/queries.mjs";
+import { getProductByIdQuery, updateProductQuery, getsAssociatedImagesQuery, deleImagesQuery, insertImageQuery } from "../../DB/queries.mjs";
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -24,7 +24,7 @@ export const updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'Todos los campos son requeridos.' });
         }
 
-        const [productExists] = await connection.execute(getProductIdQuery, [productId]);
+        const [productExists] = await connection.execute(getProductByIdQuery, [productId]);
 
         if (productExists.length === 0) {
             return res.status(404).json({ message: 'El producto que intentas actualizar no existe.' });

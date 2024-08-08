@@ -4,7 +4,7 @@ import { createProducts } from '../controllers/Product/createProduct.mjs';
 import ImagesProduct from '../config/multerConfig/multerProduct.mjs';
 import { deleteProduct } from '../controllers/product/deleteProduct.mjs';
 import { getProducts } from "../controllers/product/getProducts.mjs";
-import { getProductId } from "../controllers/product/getProductId.mjs"
+import { getProductId } from "../controllers/product/getProductById.mjs"
 import { updateProduct } from '../controllers/product/updateProduct.mjs';
 
 const router = Router();
