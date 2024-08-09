@@ -1,14 +1,19 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import imagesRoutes from "./routes/product.routes.mjs";
-import brandsRoutes from "./routes/brands.mjs"
-import categoryRoutes from "./routes/category.mjs"
+import productRoutes from "./routes/product.routes.mjs";
+import brandsRoutes from "./routes/brands.routes.mjs";
+import categoryRoutes from "./routes/category.routes.mjs";
+import cartRoutes from "./routes/cart.routes.mjs";
+import helmet from 'helmet';
 
 const app = express();
 
 // Carpeta de archivos estáticos
 app.use('/uploads', express.static('uploads'));
+
+// Middleware de seguridad
+app.use(helmet());
 
 // Muestra por la terminal la petición
 app.use(morgan('dev'));
@@ -22,9 +27,16 @@ app.use(express.json());
 // Permite formularios
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta de las imágenes
-app.use('/JMS/product', imagesRoutes);
-app.use('/JMS/brands', brandsRoutes);
-app.use('/JMS/category', categoryRoutes);
+// Rutas
+app.use('/JMS/', productRoutes);
+app.use('/JMS/', brandsRoutes);
+app.use('/JMS/', categoryRoutes);
+app.use('/JMS/', cartRoutes);
+
+// Manejo de errores
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Algo salió mal!');
+});
 
 export default app;

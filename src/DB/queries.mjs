@@ -22,7 +22,12 @@ export const updateBrandQuery = "UPDATE brand SET name = ? where id = ?"
 //categorias
 export const getCategoryQuery = "SELECT * FROM category";
 export const createCategoryQuery = "INSERT INTO category (name) VALUES (?)";
-export const validataCategoryExistsQuery = "SELECT * FROM category WHERE name = ?";
+export const validateCategoryExistsQuery = "SELECT * FROM category WHERE name = ?";
 export const validateCategoryExistsByIdQuery  = "SELECT * FROM category WHERE id = ?";
 export const deleteCategoryQuery = "DELETE FROM category WHERE id = ?";
-export const updateCategoryQuery = "UPDATE category SET name = ? where id = ?"
+export const updateCategoryQuery = "UPDATE category SET name = ? where id = ?";
+
+//cart y cart_item
+export const validateCartExistsQuery = "SELECT * FROM cart WHERE user_id = ?";
+export const createCartQuery = "INSERT INTO cart (user_id) VALUES (?)";
+export const createCart_itemQuery = "INSERT INTO cart_item (cart_id, product_id, quantity) VALUES (?, ?, ?)"

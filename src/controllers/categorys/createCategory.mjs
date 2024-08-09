@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../DB/db.mjs";
-import { createCategoryQuery, validataCategoryExistsQuery } from "../../DB/queries.mjs";
+import { createCategoryQuery, validateCategoryExistsQuery } from "../../DB/queries.mjs";
 
 // Función para crear una nueva categoría
 export const createCategory = async (req, res) => {
@@ -12,7 +12,7 @@ export const createCategory = async (req, res) => {
         const { name } = req.body;
 
         // Verificar si la categoría ya existe en la base de datos
-        const [categoryExists] = await connection.execute(validataCategoryExistsQuery, [name]);
+        const [categoryExists] = await connection.execute(validateCategoryExistsQuery, [name]);
 
         // Si la categoría ya existe, devolver un error
         if (categoryExists.length > 0) {

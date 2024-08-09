@@ -6,9 +6,13 @@ import { updateCategory } from "../controllers/categorys/updateCategory.mjs";
 
 const router = Router();
 
-router.get('/getCategory', getCategory);
-router.post('/createCategory', createCategory);
-router.delete('/deleteCategory/:id', deleteCategory);
-router.put('/updateCategory/:id', updateCategory);
+// Obtener todas las categorías
+router.get('/categories', getCategory);
+// Crear una nueva categoría
+router.post('/categories', createCategory);
+// Eliminar una categoría específica
+router.delete('/categories/:id', deleteCategory);
+// Actualizar una categoría específica
+router.put('/categories/:id', updateCategory);
 
 export default router;
