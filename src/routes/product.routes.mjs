@@ -13,7 +13,7 @@ const router = Router();
 router.post('/product', uploadProduct.fields(ImagesProduct), createProducts);
 router.delete('/product/:id', deleteProduct);
 router.get('/product', getProducts);
-router.get('/product/:id', getProductId);
+router.get('/productById/:id', getProductId);
 router.put('/product/:id',uploadProduct.fields(ImagesProduct), updateProduct)
 
 

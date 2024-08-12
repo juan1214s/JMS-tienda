@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../DB/db.mjs";
-import { createCart_itemQuery, createCartQuery, validateCartExistsQuery } from "../../DB/queries.mjs";
+import { createCartItemQuery, createCartQuery, productExistsCartQuery, updateQuantityProductExistQuery, validateCartExistsQuery } from "../../DB/queries.mjs";
 
 export const createCart = async (req, res) => {
     let connection;
@@ -26,7 +26,7 @@ export const createCart = async (req, res) => {
         let cartId;
 
         if (cart.length > 0) {
-            //accede al indice 0 del array q devuelve la consulta cart
+            // Accede al índice 0 del array que devuelve la consulta cart
             cartId = cart[0].id;
         } else {
             // Crea un nuevo carrito si no existe
@@ -34,12 +34,30 @@ export const createCart = async (req, res) => {
             cartId = result.insertId;
         }
 
-        // Inserta el artículo en el carrito
-        await connection.execute(createCart_itemQuery, [cartId, producId, quantity]);
+        // Verifica si el producto ya está en el carrito
+        const [productExistsCart] = await connection.execute(
+            productExistsCartQuery,
+            [producId, cartId]
+        );
 
-        res.status(200).json({ message: 'Se insertó correctamente el item.' });
+        if (productExistsCart.length > 0) {
+            // Si el producto ya está en el carrito, actualiza la cantidad
+            await connection.execute(
+                updateQuantityProductExistQuery,
+                [quantity, producId, cartId]
+            );
+        } else {
+            // Inserta el artículo en el carrito si no existe
+            await connection.execute(createCartItemQuery, [cartId, producId, quantity]);
+        }
+
+        res.status(200).json({ message: 'El artículo se insertó o actualizó correctamente en el carrito.' });
     } catch (error) {
-        console.log(`Error al insertar la información en el carrito: ${error}`);
-        res.status(500).json({ error: 'Error interno al insertar la información en el carrito.' });
+        console.log(`Error al insertar o actualizar la información en el carrito: ${error}`);
+        res.status(500).json({ error: 'Error interno al insertar o actualizar la información en el carrito.' });
+    } finally {
+        if (connection) {
+            connection.end();
+        }
     }
 }

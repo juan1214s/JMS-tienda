@@ -1,0 +1,101 @@
+CREATE DATABASE jms
+
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `jms`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `brand`
+--
+
+DROP TABLE IF EXISTS `brand`;
+CREATE TABLE IF NOT EXISTS `brand` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `brand`
+--
+
+INSERT INTO `brand` (`id`, `name`) VALUES
+(1, 'Sony'),
+(2, 'Sansugm'),
+(3, 'Huawei');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `image`
+--
+
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE IF NOT EXISTS `image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int DEFAULT NULL,
+  `file_path` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `image`
+--
+
+INSERT INTO `image` (`id`, `product_id`, `file_path`) VALUES
+(68, 26, 'uploads\\imagesProduct\\images-1722214953379.jpg'),
+(69, 27, 'uploads\\imagesProduct\\images-1722214956452.jpg'),
+(70, 27, 'uploads\\imagesProduct\\images-1722214956458.jpg'),
+(71, 27, 'uploads\\imagesProduct\\images-1722214956503.jpg'),
+(72, 28, 'uploads\\imagesProduct\\images-1722214958192.jpg'),
+(73, 28, 'uploads\\imagesProduct\\images-1722214958199.jpg'),
+(74, 28, 'uploads\\imagesProduct\\images-1722214958236.jpg'),
+(75, 29, 'uploads\\imagesProduct\\images-1722215310894.jpg'),
+(76, 29, 'uploads\\imagesProduct\\images-1722215310899.jpg'),
+(77, 29, 'uploads\\imagesProduct\\images-1722215310937.jpg'),
+(67, 26, 'uploads\\imagesProduct\\images-1722214953116.jpg'),
+(66, 26, 'uploads\\imagesProduct\\images-1722214953103.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `price` int NOT NULL,
+  `model` varchar(255) DEFAULT NULL,
+  `brand_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `brand_id` (`brand_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `description`, `price`, `model`, `brand_id`) VALUES
+(27, 'prueba 2', 'kadada', 4444, 'sads', 3),
+(28, 'prueba 2', 'kadada', 4444, 'sads', 3),
+(26, 'prueba 2', 'kadada', 4444, 'sads', 3),
+(29, 'prueba 2', 'kadada', 4444, 'sads', 1);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
