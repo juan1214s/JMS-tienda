@@ -19,11 +19,12 @@ export const getCart = async (req, res) => { // Exporta la función getCart para
         // Reduce los resultados para agrupar la información del carrito
         const mapResult = result.reduce((acc, cart) => {
             // Desestructura los campos necesarios de cada fila del resultado
-            const { cart_id, user_id, created_at, cart_item_id, quantity, product_id, name, description, price, model, brand_name, image_id, file_path, brand_id } = cart;
+            const { cartItem_id, cart_id, user_id, created_at, cart_item_id, quantity, product_id, name, description, price, model, brand_name, image_id, file_path, brand_id } = cart;
 
             // Verifica si el carrito no ha sido añadido al acumulador
             if (!acc[product_id]) {
                 acc[product_id] = {
+                    cartItem_id,
                     cart_id, // ID del carrito
                     user_id, // ID del usuario
                     created_at, // Fecha de creación del carrito

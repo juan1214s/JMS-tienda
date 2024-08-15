@@ -6,6 +6,7 @@ import brandsRoutes from "./routes/brands.routes.mjs";
 import categoryRoutes from "./routes/category.routes.mjs";
 import cartRoutes from "./routes/cart.routes.mjs";
 import filterRoutes from "./routes/filter.routes.mjs";
+import stripeRoutes from "./routes/stripe.routes.mjs"
 import helmet from 'helmet';
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/JMS/', brandsRoutes);
 app.use('/JMS/', categoryRoutes);
 app.use('/JMS/', cartRoutes);
 app.use('/JMS/', filterRoutes);
+app.use('/JMS/', stripeRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {
