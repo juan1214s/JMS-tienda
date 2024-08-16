@@ -3,6 +3,6 @@ import { createStripe } from "../controllers/stripe/createStripe.mjs"
 
 const route = Router();
 
-route.post('/create-stripe', createStripe)
+route.post('/create-stripe/:id', createStripe)
 
 export default route;
