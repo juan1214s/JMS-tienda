@@ -24,7 +24,6 @@ export const deleteProduct = async (req, res) => {
     // Iniciar transacción
     await connection.beginTransaction();
 
-    // Usa una consulta con parámetros para evitar inyecciones SQL
     const [productExists] = await connection.execute(validateProductExistsQuery, [productId]);
 
     if (productExists.length === 0) {

@@ -167,3 +167,8 @@ export const filterBrandQuery = `
   JOIN image i ON i.product_id = p.id 
   WHERE b.name = ?;
 `;
+
+/////////////////////////////////////////// consultas relacionadas con las tablas sales y sale_items
+
+export const getSalesByIdQuery = "SELECT u.username AS nombre, u.phone AS telefono, u.email AS correo, u.adress AS direccion, si.name AS producto, si.quantity AS cantidad FROM users u JOIN sales s ON u.id = s.user_id JOIN sales_items si ON s.id = si.sale_id where u.id = ?";
+export const getSalesQuery = "SELECT u.username AS nombre, u.phone AS telefono, u.email AS correo, u.adress AS direccion, si.name AS producto, si.quantity AS cantidad, s.total, s.status FROM users u JOIN sales s ON u.id = s.user_id JOIN sales_items si ON s.id = si.sale_id";

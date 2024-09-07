@@ -6,7 +6,6 @@ export const getProducts = async (req, res) => {
     try {
         connection = await connectToDatabase();
         const [getProducts] = await connection.execute(getProductsQuery);
-        connection.end();
 
         // Agrupar los productos por id
         const productsMap = getProducts.reduce((acc, product) => {
@@ -42,5 +41,9 @@ export const getProducts = async (req, res) => {
     } catch (error) {
         console.log(`Error al obtener los productos: ${error}`);
         res.status(500).json({ message: "Error interno al obtener los productos." });
+    }finally{
+        if (connection) {
+            connection.end();
+        }
     }
 };
