@@ -10,6 +10,7 @@ import stripeRoutes from "./routes/stripe.routes.mjs";
 import salesRoutes from "./routes/sales.routes.mjs"; 
 import loginRoutes from "./routes/loginRoutes.mjs";
 import userRoutes from "./routes/user.routes.mjs";
+import recoverPasswordRoutes from "./routes/recPassword.routes.mjs";
 import helmet from 'helmet';
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/JMS/', stripeRoutes);
 app.use('/JMS/', salesRoutes);
 app.use('/JMS/', loginRoutes);
 app.use('/JMS/', userRoutes);
+app.use('/JMS/', recoverPasswordRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {

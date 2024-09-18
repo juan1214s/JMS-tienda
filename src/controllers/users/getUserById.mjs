@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../../DB/db.mjs";
-import { deleteUserQuery, validateUserExistsQuery } from "../../DB/queries.mjs";
+import {  getUserByIdQuery } from "../../DB/queries.mjs";
 
-export const deleteUser = async (req, res) => {
+export const getUserById = async (req, res) => {
     let connection;
     try {
         const { id } = req.params;
@@ -14,18 +14,16 @@ export const deleteUser = async (req, res) => {
 
         connection = await connectToDatabase();
 
-        const [userExists] = await connection.execute(validateUserExistsQuery, [idUser]);
+        const [userExists] = await connection.execute(getUserByIdQuery, [idUser]);
 
         if (userExists.length === 0) {
             return res.status(404).json({ error: 'El usuario no existe.' });
         }
 
-        await connection.execute(deleteUserQuery, [idUser]);
-
-        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+        res.status(200).json(userExists);
     } catch (error) {
-        console.log(`Error interno al intentar eliminar un usuario: ${error}`);
-        res.status(500).json({ error: 'Error interno al intentar eliminar un usuario.' });
+        console.log(`Error interno al intentar obtener el usuario por el id: ${error}`);
+        res.status(500).json({ error: 'Error interno al intentar obtener el usuario.' });
     }
     finally {
         if (connection) {

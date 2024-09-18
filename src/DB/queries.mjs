@@ -172,3 +172,14 @@ export const filterBrandQuery = `
 
 export const getSalesByIdQuery = "SELECT u.username AS nombre, u.phone AS telefono, u.email AS correo, u.adress AS direccion, si.name AS producto, si.quantity AS cantidad FROM users u JOIN sales s ON u.id = s.user_id JOIN sales_items si ON s.id = si.sale_id where u.id = ?";
 export const getSalesQuery = "SELECT u.username AS nombre, u.phone AS telefono, u.email AS correo, u.adress AS direccion, si.name AS producto, si.quantity AS cantidad, s.total, s.status FROM users u JOIN sales s ON u.id = s.user_id JOIN sales_items si ON s.id = si.sale_id";
+
+//////////////////////////////////consultas de la tabla usuarios
+
+export const createUserQuery = "INSERT INTO users (username, phone, adress, password, email) VALUES (?, ?, ?, ?, ?)";
+export const validateEmailExistsQuery = "SELECT * FROM users WHERE email = ?";
+export const deleteUserQuery = "DELETE FROM users WHERE id = ?";
+export const validateUserExistsQuery = "SELECT * FROM users WHERE id = ?";
+export const getUserByIdQuery = "SELECT * FROM users WHERE id = ?";
+export const getUsersQuery = "SELECT * FROM users";
+export const updateUserQuery = "UPDATE `users` SET username = ?, phone = ?, adress = ?, password = ?, email = ? WHERE `id` = ?;"
+export const recoverPasswordQuery = "SELECT * FROM users WHERE email = ? AND phone = ?";

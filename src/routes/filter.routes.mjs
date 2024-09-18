@@ -1,6 +1,6 @@
 import {Router} from "express";
-import { filterCategory } from "../controllers/filterCategory/filterCategory.mjs";
-import { filterBrand } from "../controllers/filterCategory/filterBrand.mjs";
+import { filterCategory } from "../controllers/filter/filterCategory.mjs";
+import { filterBrand } from "../controllers/filter/filterBrand.mjs";
 
 const router = Router();
 

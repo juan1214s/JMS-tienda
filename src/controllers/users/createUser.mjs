@@ -1,6 +1,7 @@
 import { connectToDatabase } from "../../DB/db.mjs";
 import bcrypt from "bcrypt"; // Asegúrate de instalar bcrypt
 import dotenv from "dotenv";
+import { createUserQuery, validateEmailExistsQuery } from "../../DB/queries.mjs";
 
 dotenv.config();
 
@@ -19,20 +20,15 @@ export const createUser = async (req, res) => {
         connection = await connectToDatabase();
 
         // Verificar si el usuario ya existe
-        const [existingUser] = await connection.execute("SELECT * FROM users WHERE email = ?", [email]);
+        const [existingUser] = await connection.execute(validateEmailExistsQuery, [email]);
         if (existingUser.length > 0) {
-            return res.status(409).json({ error: "El usuario ya existe con ese correo electrónico." });
+            return res.status(409).json({ error: "Ya existe un usuario con ese correo electronico." });
         }
 
         // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 5); 
 
-        // Insertar el nuevo usuario en la base de datos
-        const query = `
-            INSERT INTO users (username, phone, adress, password, email) 
-            VALUES (?, ?, ?, ?, ?)
-        `;
-        await connection.execute(query, [username, phone, adress, hashedPassword, email]);
+        await connection.execute(createUserQuery, [username, phone, adress, hashedPassword, email]);
 
         // Responder con éxito
         res.status(201).json({ message: "Usuario creado exitosamente." });
