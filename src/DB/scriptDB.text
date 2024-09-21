@@ -1,102 +1,93 @@
--- Estructura de tabla para la tabla `brand`
-DROP TABLE IF EXISTS `brand`;
-CREATE TABLE IF NOT EXISTS `brand` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS brand;
+CREATE TABLE IF NOT EXISTS brand (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `cart`
-DROP TABLE IF EXISTS `cart`;
-CREATE TABLE IF NOT EXISTS `cart` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `created_at` date DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+DROP TABLE IF EXISTS cart;
+CREATE TABLE IF NOT EXISTS cart (
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  created_at date DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY user_id (user_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `cart_item`
-DROP TABLE IF EXISTS `cart_item`;
-CREATE TABLE IF NOT EXISTS `cart_item` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `cart_id` int NOT NULL,
-  `product_id` int NOT NULL,
-  `quantity` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cart_id` (`cart_id`),
-  KEY `product_id` (`product_id`)
+DROP TABLE IF EXISTS cart_item;
+CREATE TABLE IF NOT EXISTS cart_item (
+  id int NOT NULL AUTO_INCREMENT,
+  cart_id int NOT NULL,
+  product_id int NOT NULL,
+  quantity int NOT NULL,
+  PRIMARY KEY (id),
+  KEY cart_id (cart_id),
+  KEY product_id (product_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `category`
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS category;
+CREATE TABLE IF NOT EXISTS category (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `image`
-DROP TABLE IF EXISTS `image`;
-CREATE TABLE IF NOT EXISTS `image` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `product_id` int NOT NULL,
-  `file_path` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+DROP TABLE IF EXISTS image;
+CREATE TABLE IF NOT EXISTS image (
+  id int NOT NULL AUTO_INCREMENT,
+  product_id int NOT NULL,
+  file_path varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  KEY product_id (product_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `product`
-DROP TABLE IF EXISTS `product`;
-CREATE TABLE IF NOT EXISTS `product` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` text,
-  `price` int NOT NULL,
-  `model` varchar(255) DEFAULT NULL,
-  `stock` int NOT NULL,
-  `brand_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `brand_id` (`brand_id`),
-  KEY `category_id` (`category_id`)
+DROP TABLE IF EXISTS product;
+CREATE TABLE IF NOT EXISTS product (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  description text,
+  price int NOT NULL,
+  model varchar(255) DEFAULT NULL,
+  stock int NOT NULL,
+  brand_id int DEFAULT NULL,
+  category_id int DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY brand_id (brand_id),
+  KEY category_id (category_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `sales`
-DROP TABLE IF EXISTS `sales`;
-CREATE TABLE IF NOT EXISTS `sales` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `sale_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `total` decimal(10,2) NOT NULL,
-  `status` enum('pending','paid','cancelled','deliver') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'pending',
-  `session_id` varchar(191) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `session_id` (`session_id`),
-  KEY `user_id` (`user_id`)
+DROP TABLE IF EXISTS sales;
+CREATE TABLE IF NOT EXISTS sales (
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  sale_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total decimal(10,2) NOT NULL,
+  status enum(pending,paid,cancelled,deliver) DEFAULT pending,
+  session_id varchar(191) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY session_id (session_id),
+  KEY user_id (user_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `sales_items`
-DROP TABLE IF EXISTS `sales_items`;
-CREATE TABLE IF NOT EXISTS `sales_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `sale_id` int DEFAULT NULL,
-  `product_id` int DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  `quantity` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `venta_id` (`sale_id`)
+DROP TABLE IF EXISTS sales_items;
+CREATE TABLE IF NOT EXISTS sales_items (
+  id int NOT NULL AUTO_INCREMENT,
+  sale_id int DEFAULT NULL,
+  product_id int DEFAULT NULL,
+  name varchar(255) DEFAULT NULL,
+  price decimal(10,2) DEFAULT NULL,
+  quantity int DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY sale_id (sale_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `users`
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `phone` bigint NOT NULL,
-  `adress` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS users;
+CREATE TABLE IF NOT EXISTS users (
+  id int NOT NULL AUTO_INCREMENT,
+  username varchar(255) NOT NULL,
+  phone bigint NOT NULL,
+  adress varchar(100) NOT NULL,
+  password varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
