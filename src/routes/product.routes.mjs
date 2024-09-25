@@ -6,15 +6,16 @@ import { deleteProduct } from '../controllers/product/deleteProduct.mjs';
 import { getProducts } from "../controllers/product/getProducts.mjs";
 import { getProductId } from "../controllers/product/getProductById.mjs"
 import { updateProduct } from '../controllers/product/updateProduct.mjs';
+import { authMiddleware } from "../JWT/authMiddleware.mjs";
 
 const router = Router();
 
 // Usar el middleware de multer para manejar la carga de imágenes
-router.post('/product', uploadProduct.fields(ImagesProduct), createProducts);
-router.delete('/product/:id', deleteProduct);
+router.post('/product', authMiddleware, uploadProduct.fields(ImagesProduct), createProducts);
+router.delete('/product/:id', authMiddleware, deleteProduct);
 router.get('/product', getProducts);
 router.get('/productById/:id', getProductId);
-router.put('/product/:id',uploadProduct.fields(ImagesProduct), updateProduct)
+router.put('/product/:id', authMiddleware, uploadProduct.fields(ImagesProduct), updateProduct)
 
 
 export default router;
