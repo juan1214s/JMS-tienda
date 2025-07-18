@@ -4,6 +4,6 @@ import { authMiddleware } from "../JWT/authMiddleware.mjs";
 
 const router = Router();
 
-router.post('/chatGPT',  authMiddleware, apiChatGPT)
+router.post('/chatGPT/:user_id',  authMiddleware, apiChatGPT)
 
 export default router;
